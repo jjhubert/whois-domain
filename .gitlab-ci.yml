@@ -1,0 +1,42 @@
+---
+variables:
+  ACTION:
+    value: none
+    description: 'pipeline action, available app options: [none, build, run]'
+  IMAGE_NAME:
+    value: whois-domain
+    description: 'docker image name'
+  IMAGE_TAG:
+    value: latest
+    description: 'docker image tag'
+
+workflow:
+  rules:
+    - if: $ACTION != "none"
+
+default:
+  tags:
+    - ops
+
+stages:
+  - build
+  - run
+
+build:go:
+  image: docker:20
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - docker build -t ${IMAGE_NAME}:${IMAGE_TAG} . --no-cache=true
+  rules:
+    - if: $ACTION == "build"
+
+run:go:
+  image: docker:20
+  stage: run
+  script:
+    - docker run --name ${IMAGE_NAME} ${IMAGE_NAME}:${IMAGE_TAG}
+    - docker rm ${IMAGE_NAME}
+  rules:
+    - if: $ACTION == "run"

@@ -30,8 +30,8 @@ qiwei:
   unknownTemplate: "
     >域名:<font color=\"comment\">%s</font>\n"
 domain:
-  - "dingtalk.com"
+  - "example.com"
 manifest:
   domainExpireList:
-    qq.com: "2031-07-27"
+    test.com: "2031-07-27"
 
